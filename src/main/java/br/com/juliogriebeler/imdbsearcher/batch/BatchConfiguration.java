@@ -12,12 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.juliogriebeler.imdbsearcher.batch.listener.JobCompletionNotificationListener;
-import br.com.juliogriebeler.imdbsearcher.batch.model.FxMarketEvent;
-import br.com.juliogriebeler.imdbsearcher.batch.model.FxMarketPricesStore;
-import br.com.juliogriebeler.imdbsearcher.batch.model.Trade;
-import br.com.juliogriebeler.imdbsearcher.batch.processor.FxMarketEventProcessor;
-import br.com.juliogriebeler.imdbsearcher.batch.reader.FxMarketEventReader;
-import br.com.juliogriebeler.imdbsearcher.batch.writer.StockPriceAggregator;
+import br.com.juliogriebeler.imdbsearcher.batch.model.TitleBasicIn;
+import br.com.juliogriebeler.imdbsearcher.batch.model.TitleBasicProcessed;
+import br.com.juliogriebeler.imdbsearcher.batch.processor.TitleBasicProcessor;
+import br.com.juliogriebeler.imdbsearcher.batch.reader.TitleBasicReader;
+import br.com.juliogriebeler.imdbsearcher.batch.writer.TitleBasicWriter;
 
 /**
  * The Class BatchConfiguration.
@@ -34,27 +33,28 @@ public class BatchConfiguration {
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
 
-	@Bean
-	public FxMarketPricesStore fxMarketPricesStore() {
-		return new FxMarketPricesStore();
-	}
+	/* TODO */
+//	@Bean
+//	public TitleBasicStore fxMarketPricesStore() {
+//		return new TitleBasicStore();
+//	}
 
 	// FxMarketEventReader (Reader)
 	@Bean
-	public FxMarketEventReader fxMarketEventReader() {
-		return new FxMarketEventReader();
+	public TitleBasicReader titleBasicReader() {
+		return new TitleBasicReader();
 	}
 
 	// FxMarketEventProcessor (Processor)
 	@Bean
-	public FxMarketEventProcessor fxMarketEventProcessor() {
-		return new FxMarketEventProcessor();
+	public TitleBasicProcessor titleBasicEventProcessor() {
+		return new TitleBasicProcessor();
 	}
 
 	// StockPriceAggregator (Writer)
 	@Bean
-	public StockPriceAggregator stockPriceAggregator() {
-		return new StockPriceAggregator();
+	public TitleBasicWriter titleBasicAggregator() {
+		return new TitleBasicWriter();
 	}
 
 	// JobCompletionNotificationListener (File loader)
@@ -65,16 +65,16 @@ public class BatchConfiguration {
 
 	// Configure job step
 	@Bean
-	public Job fxMarketPricesETLJob() {
-		return jobBuilderFactory.get("FxMarket Prices ETL Job").incrementer(new RunIdIncrementer()).listener(listener())
+	public Job titleBasicETLJob() {
+		return jobBuilderFactory.get("Title Basic ETL Job").incrementer(new RunIdIncrementer()).listener(listener())
 				.flow(etlStep()).end().build();
 	}
 
 	@Bean
 	public Step etlStep() {
-		return stepBuilderFactory.get("Extract -> Transform -> Aggregate -> Load").<FxMarketEvent, Trade> chunk(10000)
-				.reader(fxMarketEventReader()).processor(fxMarketEventProcessor())
-				.writer(stockPriceAggregator())
+		return stepBuilderFactory.get("Extract -> Transform -> Aggregate -> Load").<TitleBasicIn, TitleBasicProcessed> chunk(10000)
+				.reader(titleBasicReader()).processor(titleBasicEventProcessor())
+				.writer(titleBasicAggregator())
 				.build();
 	}
 

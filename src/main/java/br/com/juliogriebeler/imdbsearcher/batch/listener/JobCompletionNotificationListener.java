@@ -10,10 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import br.com.juliogriebeler.imdbsearcher.batch.model.FxMarketPricesStore;
-import br.com.juliogriebeler.imdbsearcher.batch.model.StockPriceDetails;
 
 /**
  * The Class JobCompletionNotificationListener
@@ -28,8 +24,8 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 
 	private static final String LINE_DILM = ",";
 
-	@Autowired
-	private FxMarketPricesStore fxMarketPricesStore;
+//	@Autowired
+//	private TitleBasicStore fxMarketPricesStore;
 
 	@Override
 	public void afterJob(JobExecution jobExecution) {
@@ -39,14 +35,14 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 			try (BufferedWriter fileWriter = Files.newBufferedWriter(path)) {
 				fileWriter.write(HEADER);
 				fileWriter.newLine();
-				for (StockPriceDetails pd : fxMarketPricesStore.values()) {
-					fileWriter.write(new StringBuilder().append(pd.getStock())
-							.append(LINE_DILM).append(pd.getOpen())
-							.append(LINE_DILM).append(pd.getClose())
-							.append(LINE_DILM).append(pd.getLow())
-							.append(LINE_DILM).append(pd.getHigh()).toString());
-					fileWriter.newLine();
-				}
+//				for (StockPriceDetails pd : fxMarketPricesStore.values()) {
+//					fileWriter.write(new StringBuilder().append(pd.getStock())
+//							.append(LINE_DILM).append(pd.getOpen())
+//							.append(LINE_DILM).append(pd.getClose())
+//							.append(LINE_DILM).append(pd.getLow())
+//							.append(LINE_DILM).append(pd.getHigh()).toString());
+//					fileWriter.newLine();
+//				}
 			} catch (Exception e) {
 				log.error("Fetal error: error occurred while writing {} file", path.getFileName());
 			}
