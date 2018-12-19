@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import br.com.juliogriebeler.imdbsearcher.batch.model.TitleBasicIn;
-import br.com.juliogriebeler.imdbsearcher.batch.model.TitleBasicProcessed;
+import br.com.juliogriebeler.imdbsearcher.model.TitleBasic;
 import br.com.juliogriebeler.imdbsearcher.utils.ValidationUtils;
 
 /**
@@ -16,14 +16,14 @@ import br.com.juliogriebeler.imdbsearcher.utils.ValidationUtils;
  * 
  * @author Julio
  */
-public class TitleBasicProcessor implements ItemProcessor<TitleBasicIn, TitleBasicProcessed> {
+public class TitleBasicProcessor implements ItemProcessor<TitleBasicIn, TitleBasic> {
 
 	private static final Logger log = LoggerFactory.getLogger(TitleBasicProcessor.class);
 
 	@Override
-	public TitleBasicProcessed process(final TitleBasicIn titleBasic) throws Exception {
+	public TitleBasic process(final TitleBasicIn titleBasic) throws Exception {
 
-		final TitleBasicProcessed titleBasicProcessed = new TitleBasicProcessed();
+		final TitleBasic titleBasicProcessed = new TitleBasic();
 		try {
 		
 			titleBasicProcessed.setTconst(titleBasic.getTconst());

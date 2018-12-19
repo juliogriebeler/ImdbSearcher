@@ -1,13 +1,20 @@
-package br.com.juliogriebeler.imdbsearcher.batch.model;
+package br.com.juliogriebeler.imdbsearcher.model;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 /**
- * The Class Trade.
+ * The Class TitleBasic.
  * 
  * @author Julio
  */
-public class TitleBasicProcessed {
+
+@Document(indexName = "imdb-searcher", type = "title-basic", shards = 2)
+public class TitleBasic {
+
+	@Id
 	private String tconst;
 	private String titleType;
 	private String primaryTitle;
@@ -18,7 +25,7 @@ public class TitleBasicProcessed {
 	private Long runtimeMinutes;
 	private List<String> genres;
 
-	public TitleBasicProcessed() {
+	public TitleBasic() {
 	}
 
 	/**
@@ -32,7 +39,7 @@ public class TitleBasicProcessed {
 	 * @param runtimeMinutes
 	 * @param genres
 	 */
-	public TitleBasicProcessed(String tconst, String titleType, String primaryTitle, String originalTitle,
+	public TitleBasic(String tconst, String titleType, String primaryTitle, String originalTitle,
 			boolean isAdult, Long startYear, Long endYear, Long runtimeMinutes, List<String> genres) {
 		super();
 		this.tconst = tconst;
@@ -183,7 +190,7 @@ public class TitleBasicProcessed {
 
 	@Override
 	public String toString() {
-		return "TitleBasicProcessed [tconst = " + tconst + ", titleType = " + titleType + ", primaryTitle = "
+		return "TitleBasic [tconst = " + tconst + ", titleType = " + titleType + ", primaryTitle = "
 				+ primaryTitle + ", originalTitle = " + originalTitle + ", isAdult = " + isAdult + ", startYear = "
 				+ startYear + ", endYear = " + endYear + ", runtimeMinutes = " + runtimeMinutes + ", genres = " + genres
 				+ " ]";
